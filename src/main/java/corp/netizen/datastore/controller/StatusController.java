@@ -6,6 +6,8 @@
 package corp.netizen.datastore.controller;
 
 import corp.netizen.datastore.model.Mib;
+import corp.netizen.datastore.service.ClientService;
+
 import java.util.ArrayList;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class StatusController {
+	
+	private ClientService clientService;
 
     @RequestMapping(path="/status/running/{id}", method = RequestMethod.PUT)
     public ResponseEntity<HttpStatus> setRunningStatus(@PathVariable("id") long id) {
