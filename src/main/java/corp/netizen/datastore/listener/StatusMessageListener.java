@@ -3,16 +3,18 @@ package corp.netizen.datastore.listener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ch.qos.logback.classic.Logger;
+
 import corp.netizen.datastore.repository.MockRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Component
 public class StatusMessageListener {
 	
 
-	private MockRepository saveToDb;
+    private MockRepository saveToDb;
 	
-	//private static final Logger log = LogManager.getLogger(StatusMessageListener.class);
+    private static final Logger log = LogManager.getLogger(StatusMessageListener.class);
 	
         
     public StatusMessageListener(MockRepository rep) {
@@ -32,6 +34,7 @@ public class StatusMessageListener {
 
         productRepository.save(product);
         log.info("Message processed...");*/
+        log.debug("Received a message");
     	System.out.println("Got message, saving to db");
     }
 
