@@ -14,10 +14,10 @@ public class StatusMessageListener {
 	
 	//private static final Logger log = LogManager.getLogger(StatusMessageListener.class);
 	
-	@Autowired
-	public StatusMessageListener(MockRepository rep) {
-		this.saveToDb = rep; // bean of jparepository
-	}
+        
+    public StatusMessageListener(MockRepository rep) {
+	this.saveToDb = rep; // bean of jparepository
+    }
 	
 	/**
      * This method is invoked whenever any new message is put in the queue.

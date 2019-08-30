@@ -15,20 +15,20 @@ import org.springframework.context.annotation.ComponentScan;
 
 import corp.netizen.datastore.listener.StatusMessageListener;
 
-@ComponentScan(basePackages = "corp.netizen")
-@EntityScan("corp.netizen.model")
+@ComponentScan("corp.netizen.datastore")
 @SpringBootApplication
 public class DatastoreApplication {
 
-	public static String QUEUE_NAME = "msg_gueue";
-	
-	public static void main(String[] args) {
-		SpringApplication.run(DatastoreApplication.class, args);
-	}
+	public static String QUEUE_NAME = "msg_gueue";	
 	
 	@Bean
 	Queue queue() {
 		return new Queue(QUEUE_NAME, false);
+	}
+        
+        @Bean
+	TopicExchange exchange() {
+		return new TopicExchange("spring-boot-exchange");
 	}
 	
 	@Bean
@@ -49,6 +49,10 @@ public class DatastoreApplication {
 	@Bean
 	MessageListenerAdapter listenerAdapter(StatusMessageListener receiver) {
 		return new MessageListenerAdapter(receiver, "receiveMessage");
+	}
+        
+        public static void main(String[] args) {
+		SpringApplication.run(DatastoreApplication.class, args);
 	}
 	
 

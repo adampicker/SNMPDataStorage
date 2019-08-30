@@ -9,6 +9,7 @@ import corp.netizen.datastore.model.Mib;
 import corp.netizen.datastore.service.ClientService;
 
 import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class StatusController {
 	
-	private ClientService clientService;
+    private ClientService clientService;
 
+    @Autowired
+    public void setClientService(ClientService productService) {
+        this.clientService = productService;
+    }    
+        
     @RequestMapping(path="/status/running/{id}", method = RequestMethod.PUT)
     public ResponseEntity<HttpStatus> setRunningStatus(@PathVariable("id") long id) {
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -37,6 +43,7 @@ public class StatusController {
     public ResponseEntity<HttpStatus> setInactiveStatus(@PathVariable("id") long id) {
         HttpHeaders responseHeaders = new HttpHeaders();
 	responseHeaders.set("MyResponseHeader", "inactive: " + id);
+        clientService.sendStatusMessage(5);
 	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     

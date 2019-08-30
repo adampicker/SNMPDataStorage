@@ -9,7 +9,7 @@ import corp.netizen.datastore.DatastoreApplication;
 @Service
 public class ClientService {
 	
-	private RabbitTemplate rabbitTemplate;
+    private RabbitTemplate rabbitTemplate;
 
     @Autowired
     public ClientService(RabbitTemplate rabbitTemplate) {
