@@ -6,7 +6,7 @@
 package corp.netizen.datastore.controller;
 
 import corp.netizen.datastore.model.Mib;
-import corp.netizen.datastore.service.ClientService;
+import corp.netizen.datastore.service.ClientServiceImpl;
 
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class StatusController {
 	
-    private ClientService clientService;
+    private ClientServiceImpl clientService;
 
     @Autowired
-    public void setClientService(ClientService productService) {
+    public void setClientService(ClientServiceImpl productService) {
         this.clientService = productService;
     }    
         
