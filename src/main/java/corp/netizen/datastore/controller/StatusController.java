@@ -5,6 +5,7 @@
  */
 package corp.netizen.datastore.controller;
 
+import corp.netizen.datastore.model.Client;
 import corp.netizen.datastore.model.Mib;
 import corp.netizen.datastore.service.ClientServiceImpl;
 
@@ -34,17 +35,16 @@ public class StatusController {
         
     @RequestMapping(path="/status/running/{id}", method = RequestMethod.PUT)
     public ResponseEntity<HttpStatus> setRunningStatus(@PathVariable("id") long id) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-	responseHeaders.set("MyResponseHeader", "inactive:" + id);
-	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        clientService.saveOrUpdate(new Client(id, 1));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     
     @RequestMapping(path="/status/inactive/{id}", method = RequestMethod.PUT)
     public ResponseEntity<HttpStatus> setInactiveStatus(@PathVariable("id") long id) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-	responseHeaders.set("MyResponseHeader", "inactive: " + id);
-        clientService.sendStatusMessage(5);
-	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        /*HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("MyResponseHeader", "inactive: " + id);*/
+        clientService.saveOrUpdate(new Client(id, 0));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     
 }
