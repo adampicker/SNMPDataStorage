@@ -15,5 +15,7 @@ public interface ClientService {
     void delete(Long id);
 
     void sendStatusMessage(Long id, int status);
+    
+    Client getByMac(String mac);
 
 }

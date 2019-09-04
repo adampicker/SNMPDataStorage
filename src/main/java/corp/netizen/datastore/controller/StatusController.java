@@ -35,7 +35,7 @@ public class StatusController {
         
     @RequestMapping(path="/status/running/{id}", method = RequestMethod.PUT)
     public ResponseEntity<HttpStatus> setRunningStatus(@PathVariable("id") long id) {
-        clientService.saveOrUpdate(new Client(id, 1));
+        //clientService.saveOrUpdate(new Client(id, 1));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     
@@ -43,7 +43,7 @@ public class StatusController {
     public ResponseEntity<HttpStatus> setInactiveStatus(@PathVariable("id") long id) {
         /*HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("MyResponseHeader", "inactive: " + id);*/
-        clientService.saveOrUpdate(new Client(id, 0));
+        //clientService.saveOrUpdate(new Client(id, 0));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     

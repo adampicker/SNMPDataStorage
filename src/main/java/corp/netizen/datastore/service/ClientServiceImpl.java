@@ -56,5 +56,10 @@ public class ClientServiceImpl implements ClientService {
         actionmap.put(id, status);
 		rabbitTemplate.convertAndSend(DatastoreApplication.QUEUE_NAME, actionmap); // to powinno być co przesyłam, mapa..
 	}
+	
+	@Override
+	public Client getByMac(String mac) {
+		return clientRepository.findByMac(mac).orElse(null);
+	}
 
 }

@@ -18,9 +18,8 @@ public class Client {
 	
 	
 	public Client() {}
-	public Client(Long id, int status) {
-		this.id = id;
-		this.status = status;
+	public Client(String macAddress) {
+		this.macAddress = macAddress;
 	}
 	
 	public Long getId() {
