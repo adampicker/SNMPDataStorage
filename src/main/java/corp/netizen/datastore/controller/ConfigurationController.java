@@ -25,11 +25,13 @@ public class ConfigurationController {
         this.clientService = productService;
     }
 	
-	@RequestMapping(path="/access/{mac}", method = RequestMethod.GET)
-	public ResponseEntity<HttpStatus> getAccess(@PathVariable("mac") String macAddress) {
-		Client tmp = clientService.getByMac(macAddress);
-		if (tmp == null) clientService.saveOrUpdate(new Client(macAddress));
-		return new ResponseEntity<>(HttpStatus.OK);
+	@RequestMapping(path="/access/{mac}", method = RequestMethod.PATCH)
+	public ResponseEntity<Long> getAccess(@PathVariable("mac") String macAddress) {
+		Client tmp = clientService.getByMac(macAddress); // creates new client if one with given mac not exists
+		if (tmp == null) {
+			tmp = clientService.saveOrUpdate(new Client(macAddress));
+		}
+		return new ResponseEntity<Long>(tmp.getId(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(path="/configuration", method = RequestMethod.GET, produces = "application/json")

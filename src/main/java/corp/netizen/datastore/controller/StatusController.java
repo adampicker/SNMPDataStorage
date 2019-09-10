@@ -7,6 +7,7 @@ package corp.netizen.datastore.controller;
 
 import corp.netizen.datastore.model.Client;
 import corp.netizen.datastore.model.Mib;
+import corp.netizen.datastore.repository.ClientRepository;
 import corp.netizen.datastore.service.ClientServiceImpl;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class StatusController {
     @Autowired
     public void setClientService(ClientServiceImpl productService) {
         this.clientService = productService;
-    }    
+    }
         
     @RequestMapping(path="/status/running/{id}", method = RequestMethod.PUT)
     public ResponseEntity<HttpStatus> setRunningStatus(@PathVariable("id") long id) {
