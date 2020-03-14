@@ -5,12 +5,17 @@
  */
 package corp.netizen.datastore.controller;
 
+import com.netizen.datastore.dto.ClientDTO;
 import corp.netizen.datastore.model.Client;
 import corp.netizen.datastore.model.Mib;
 import corp.netizen.datastore.repository.ClientRepository;
 import corp.netizen.datastore.service.ClientServiceImpl;
 
 import java.util.ArrayList;
+
+import corp.netizen.datastore.service.ConfigurationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,26 +31,46 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class StatusController {
-	
+
+    public static Logger logger = LoggerFactory.getLogger(StatusController.class);
+
     private ClientServiceImpl clientService;
+    private ConfigurationService configurationService;
 
     @Autowired
-    public void setClientService(ClientServiceImpl productService) {
+    public void setClientService(ClientServiceImpl productService, ConfigurationService configurationService) {
         this.clientService = productService;
+        this.configurationService = configurationService;
     }
         
     @RequestMapping(path="/status/running/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<HttpStatus> setRunningStatus(@PathVariable("id") long id) {
-        //clientService.saveOrUpdate(new Client(id, 1));
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<ClientDTO> setRunningStatus(@PathVariable("id") long id) {
+        logger.info("Got active status from client id: " + id);
+        Client client = clientService.getById(id);
+        ClientDTO clientDto = null;
+        if (client == null) {
+            logger.warn("Client not found. Sending request HttpStatus.NO_CONTENT(" + HttpStatus.NO_CONTENT.value() + ")");
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        client.setStatus(1);
+        clientDto = this.clientService.convert(this.clientService.saveOrUpdate(client));
+
+        return new ResponseEntity<>(clientDto, HttpStatus.OK);
     }
     
     @RequestMapping(path="/status/inactive/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<HttpStatus> setInactiveStatus(@PathVariable("id") long id) {
-        /*HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("MyResponseHeader", "inactive: " + id);*/
-        //clientService.saveOrUpdate(new Client(id, 0));
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<ClientDTO> setInactiveStatus(@PathVariable("id") long id) {
+        logger.info("Got inactive status from client id: " + id);
+        Client client = clientService.getById(id);
+        ClientDTO clientDto = null;
+        if (client == null) {
+            logger.warn("Client not found. Sending request HttpStatus.NO_CONTENT(" + HttpStatus.NO_CONTENT.value() + ")");
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        client.setStatus(0);
+        clientDto = this.clientService.convert(this.clientService.saveOrUpdate(client));
+
+        return new ResponseEntity<>(clientDto, HttpStatus.OK);
     }
     
 }

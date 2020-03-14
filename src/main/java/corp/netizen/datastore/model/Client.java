@@ -1,13 +1,14 @@
 package corp.netizen.datastore.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity
-@Table(name = "cities")
+@Table(name = "clients")
 public class Client {
 	
 	@Id
@@ -16,10 +17,18 @@ public class Client {
 	private int status;
 	private String macAddress;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name="configuration", referencedColumnName="id" )
+	private Configuration configuration;
+	
+	@OneToOne(mappedBy= "client")
+	private MibValue mibValue;
+	
 	
 	public Client() {}
-	public Client(String macAddress) {
+	public Client(String macAddress, Configuration defaultConfiguration) {
 		this.macAddress = macAddress;
+		this.configuration = defaultConfiguration;
 	}
 	
 	public Long getId() {

@@ -1,5 +1,8 @@
 package corp.netizen.datastore;
 
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -18,6 +21,8 @@ import corp.netizen.datastore.listener.StatusMessageListener;
 @ComponentScan("corp.netizen.datastore")
 @SpringBootApplication
 public class DatastoreApplication {
+
+	public static Logger logger  = LoggerFactory.getLogger(DatastoreApplication.class);
 
 	public static String QUEUE_NAME = "msg_gueue";	
 	
@@ -50,8 +55,14 @@ public class DatastoreApplication {
 	MessageListenerAdapter listenerAdapter(StatusMessageListener receiver) {
 		return new MessageListenerAdapter(receiver, "receiveMessage");
 	}
+
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
+	}
         
         public static void main(String[] args) {
+		logger.info("Application starting with params: " + args);
 		SpringApplication.run(DatastoreApplication.class, args);
 	}
 	

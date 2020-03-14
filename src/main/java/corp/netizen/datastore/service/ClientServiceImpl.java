@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.netizen.datastore.converters.ClientConverter;
+import com.netizen.datastore.dto.ClientDTO;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +20,13 @@ public class ClientServiceImpl implements ClientService {
 	
     private RabbitTemplate rabbitTemplate;
     private ClientRepository clientRepository;
+    public ClientConverter clientConverter;
 
     @Autowired
     public ClientServiceImpl(RabbitTemplate rabbitTemplate, ClientRepository clientRepository) {
         this.rabbitTemplate = rabbitTemplate;
         this.clientRepository = clientRepository;
+        this.clientConverter = new ClientConverter();
     }
 	
 
@@ -62,4 +66,9 @@ public class ClientServiceImpl implements ClientService {
 		return clientRepository.findByMac(mac).orElse(null);
 	}
 
+	@Override
+	public ClientDTO convert(Client client) {
+		ClientDTO dto = new ClientDTO();
+		return this.clientConverter.createFromEntity(client);
+	}
 }
