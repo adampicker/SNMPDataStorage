@@ -1,46 +1,135 @@
 package corp.netizen.datastore.service;
 
-import com.netizen.datastore.converters.MibConverter;
-import com.netizen.datastore.dto.MibDTO;
+import corp.netizen.datastore.controller.MonitorConfigurationController;
+import corp.netizen.datastore.converters.ClientConverter;
+import corp.netizen.datastore.converters.ConfigurationConverter;
+import corp.netizen.datastore.converters.MibConverter;
+import corp.netizen.datastore.dto.ConfigurationDTO;
+import corp.netizen.datastore.dto.ConfigurationSaveDto;
+import corp.netizen.datastore.dto.MibDTO;
+import corp.netizen.datastore.model.Client;
 import corp.netizen.datastore.model.Configuration;
 import corp.netizen.datastore.model.Mib;
 import corp.netizen.datastore.repository.ConfigurationRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ConfigurationService {
 
+    public static Logger logger = LoggerFactory.getLogger(ConfigurationService.class);
+
     public ConfigurationRepository configurationRepository;
-    private MibConverter mibConverter;
+    private MibService mibService;
+    private ConfigurationConverter configurationConverter;
+    private ClientService clientService;
 
     @Autowired
-    public ConfigurationService(ConfigurationRepository configurationRepository){
+    public ConfigurationService(ConfigurationRepository configurationRepository, MibService mibService, ClientServiceImpl clientService) {
         this.configurationRepository = configurationRepository;
-        this.mibConverter = new MibConverter();
+        this.mibService = mibService;
+        this.configurationConverter = new ConfigurationConverter(mibService.mibConverter);
+        this.clientService = clientService;
 
     }
 
-    public Configuration getById(Long id){
+    public Configuration getById(Long id) {
         return this.configurationRepository.findById(id).orElse(null);
     }
 
-    public List<MibDTO> getConfiguration(Long id){
-        Configuration configuration  = this.getById(id);
+    public List<MibDTO> getConfiguration(Long id) {
+        Configuration configuration = this.getById(id);
         Set<Mib> mibInConfiguration;
-        if (configuration == null) mibInConfiguration =  Collections.EMPTY_SET;
+        if (configuration == null) mibInConfiguration = Collections.EMPTY_SET;
         else {
-            mibInConfiguration =  configuration.getMib();
+            mibInConfiguration = configuration.getMib();
         }
-        return this.mibConverter.createFromEntities(mibInConfiguration);
+        return this.mibService.mibConverter.createFromEntities(mibInConfiguration);
     }
 
-    public Configuration getDefaultConfiguration(){
-        return this.configurationRepository.findById((long)0).orElse(null);
+    public Configuration getDefaultConfiguration() {
+        return this.configurationRepository.getDefaultConfiguration();
+    }
+
+    public Configuration saveConfigurationSaveDto(ConfigurationSaveDto configurationSaveDto) {
+        logger.info("Saving new configuation");
+        Configuration newConfiguration = new Configuration();
+        List<Mib> mibs = new LinkedList<Mib>();
+        configurationSaveDto.getMibs().forEach(mib -> {
+            Mib mibToAdd = this.mibService.getMibByOid((mib.getOid()));
+            if (mibToAdd != null) {
+                mibs.add(mibToAdd);
+                mibToAdd.addConfiguration(newConfiguration);
+            }
+        });
+        //newConfiguration.setMib(mibs.stream().collect(Collectors.toSet()));
+        newConfiguration.setConfigurationName(configurationSaveDto.getConfigurationName());
+        newConfiguration.setDefaultConfiguration(configurationSaveDto.isDefaultConfiguration());
+        Configuration saved = this.save(newConfiguration);
+        return saved;
+    }
+
+    private Configuration save(Configuration conf) {
+        logger.debug("Saving configuration");
+        Configuration savedConfiguration = this.configurationRepository.save(conf);
+        if (savedConfiguration.isDefaultConfiguration()) {
+            logger.info("Saved configuration is default. Running modifying query...");
+            int modifiedRows = this.configurationRepository.setNonDefaultExcept(savedConfiguration.getId());
+            logger.info("Modified rows: " + modifiedRows);
+
+        }
+        return savedConfiguration;
+    }
+
+    public List<ConfigurationDTO> listAllDTO() {
+        List<ConfigurationDTO> dtos = new LinkedList<ConfigurationDTO>();
+        this.configurationRepository.findAll().forEach(conf -> {
+            dtos.add(this.configurationConverter.createFromEntity(conf));
+        });
+        return dtos;
+    }
+
+    public Configuration updateConfiguration(ConfigurationDTO configurationDto) {
+        logger.info("Updating configuration, configuration id: " + configurationDto.getId());
+        Configuration configurationToUpdate = this.configurationRepository.getOne(configurationDto.getId());
+        if (configurationToUpdate == null) return null;
+        logger.info("Configuration to update found");
+
+        for (Mib mib : new ArrayList<>(configurationToUpdate.getMib())) {
+            mib.getConfiguration().remove(configurationToUpdate);
+        }
+        List<Mib> mibs = new LinkedList<Mib>();
+        configurationDto.getMib().forEach(mib -> {
+            Mib mibToAdd = this.mibService.getMibByOid((mib.getOid()));
+            if (mibToAdd != null) {
+                mibs.add(mibToAdd);
+                mibToAdd.addConfiguration(configurationToUpdate);
+            }
+        });
+        configurationToUpdate.setDefaultConfiguration(configurationDto.isDefaultConfiguration());
+        configurationToUpdate.setConfigurationName(configurationDto.getConfigurationName());
+        configurationToUpdate.setMib(mibs.stream().collect(Collectors.toSet()));
+        Configuration saved = this.configurationRepository.save(configurationToUpdate);
+        if (saved.isDefaultConfiguration())
+            this.configurationRepository.setNonDefaultExcept(saved.getId());
+
+        return configurationToUpdate == null ? null : configurationToUpdate;
+    }
+
+    public void delete(Long id) {
+        Configuration c = this.configurationRepository.findById(id).orElse(null);
+        if (c == null) return;
+        logger.info("Configuration to delete found. Deleting");
+        for (Mib mib : new ArrayList<>(c.getMib())) {
+            mib.removeConfiguration(c);
+        }
+
+        this.configurationRepository.delete(c);
     }
 
 

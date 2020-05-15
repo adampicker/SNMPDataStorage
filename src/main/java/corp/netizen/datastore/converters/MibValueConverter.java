@@ -1,6 +1,6 @@
-package com.netizen.datastore.converters;
+package corp.netizen.datastore.converters;
 
-import com.netizen.datastore.dto.MibValuesDTO;
+import corp.netizen.datastore.dto.MibValuesDTO;
 import corp.netizen.datastore.model.Client;
 import corp.netizen.datastore.model.Mib;
 import corp.netizen.datastore.model.MibValue;
@@ -19,7 +19,7 @@ public class MibValueConverter implements GenericConverter<MibValue, MibValuesDT
     @Override
     public MibValue createFromDto(MibValuesDTO.MibValueDTO dto) {
         MibValue mibValue = new MibValue();
-        mibValue.setMib(this.mibResolver.apply(dto.getOid().toString()));
+        mibValue.setMib(this.mibResolver.apply("." + dto.getOid().toString()));
         mibValue.setClient(this.clientResolver.apply(dto.getClientId()));
         mibValue.setValue(dto.getValue());
         mibValue.setTimestamp((dto.getTimestamp()));

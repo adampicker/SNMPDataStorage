@@ -1,14 +1,13 @@
 package corp.netizen.datastore.service;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.netizen.datastore.dto.ClientDTO;
+import corp.netizen.datastore.dto.ClientDTO;
 import corp.netizen.datastore.model.Client;
 
 public interface ClientService {
 	
-	List<Client> listAll();
+	List<ClientDTO> listAll();
 
     Client getById(Long id);
 

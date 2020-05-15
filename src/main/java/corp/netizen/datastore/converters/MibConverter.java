@@ -1,8 +1,10 @@
-package com.netizen.datastore.converters;
+package corp.netizen.datastore.converters;
 
-import com.netizen.datastore.dto.MibDTO;
+import corp.netizen.datastore.dto.MibDTO;
 import corp.netizen.datastore.model.Mib;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MibConverter implements GenericConverter<Mib, MibDTO> {
 
 

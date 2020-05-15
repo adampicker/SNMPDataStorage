@@ -1,4 +1,4 @@
-package com.netizen.datastore.converters;
+package corp.netizen.datastore.converters;
 
 import java.util.Collection;
 import java.util.List;

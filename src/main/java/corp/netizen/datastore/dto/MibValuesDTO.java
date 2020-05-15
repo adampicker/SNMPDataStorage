@@ -1,4 +1,4 @@
-package com.netizen.datastore.dto;
+package corp.netizen.datastore.dto;
 
 import corp.netizen.datastore.model.Client;
 import lombok.Getter;

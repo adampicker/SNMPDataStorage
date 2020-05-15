@@ -1,6 +1,8 @@
 package corp.netizen.datastore;
 
-import org.modelmapper.ModelMapper;
+
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
+import com.ulisesbocchio.jasyptspringboot.annotation.EncryptablePropertySource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Binding;
@@ -17,9 +19,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 import corp.netizen.datastore.listener.StatusMessageListener;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @ComponentScan("corp.netizen.datastore")
 @SpringBootApplication
+@EncryptablePropertySource("application.properties")
+@Configuration
 public class DatastoreApplication {
 
 	public static Logger logger  = LoggerFactory.getLogger(DatastoreApplication.class);
@@ -57,14 +65,16 @@ public class DatastoreApplication {
 	}
 
 	@Bean
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
+
         
         public static void main(String[] args) {
 		logger.info("Application starting with params: " + args);
 		SpringApplication.run(DatastoreApplication.class, args);
 	}
+
 	
 
 }

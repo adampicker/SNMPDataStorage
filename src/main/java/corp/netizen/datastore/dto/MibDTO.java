@@ -1,4 +1,4 @@
-package com.netizen.datastore.dto;
+package corp.netizen.datastore.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

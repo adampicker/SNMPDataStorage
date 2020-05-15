@@ -1,6 +1,6 @@
-package com.netizen.datastore.converters;
+package corp.netizen.datastore.converters;
 
-import com.netizen.datastore.dto.ClientDTO;
+import corp.netizen.datastore.dto.ClientDTO;
 import corp.netizen.datastore.model.Client;
 
 public class ClientConverter implements GenericConverter<Client, ClientDTO> {
@@ -18,7 +18,11 @@ public class ClientConverter implements GenericConverter<Client, ClientDTO> {
         ClientDTO dto = new ClientDTO();
         dto.setId(entity.getId());
         dto.setMacAddress(entity.getMacAddress());
-        dto.setStatus(entity.getStatus());
+        dto.setStatus(entity.getStatus().toString());
+        dto.setType(entity.getType());
+        dto.setPort(entity.getPort());
+        dto.setPid(entity.getPid());
+        dto.setUserName(entity.getUserName());
         return dto;
     }
 
