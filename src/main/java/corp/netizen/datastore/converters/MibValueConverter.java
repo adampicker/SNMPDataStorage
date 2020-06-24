@@ -5,6 +5,7 @@ import corp.netizen.datastore.model.Client;
 import corp.netizen.datastore.model.Mib;
 import corp.netizen.datastore.model.MibValue;
 
+import java.util.LinkedList;
 import java.util.function.Function;
 
 public class MibValueConverter implements GenericConverter<MibValue, MibValuesDTO.MibValueDTO> {
@@ -28,7 +29,12 @@ public class MibValueConverter implements GenericConverter<MibValue, MibValuesDT
 
     @Override
     public MibValuesDTO.MibValueDTO createFromEntity(MibValue entity) {
-        return null;
+        MibValuesDTO.MibValueDTO mibValueDto = new MibValuesDTO.MibValueDTO();
+        mibValueDto.setClientId(entity.getClient().getId());
+        mibValueDto.setOid(entity.getMib().getOid());
+        mibValueDto.setTimestamp(entity.getTimestamp());
+        mibValueDto.setValue(entity.getValue());
+        return mibValueDto;
     }
 
     @Override

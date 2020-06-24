@@ -132,5 +132,15 @@ public class ConfigurationService {
         this.configurationRepository.delete(c);
     }
 
+    public List<MibDTO> listAllMibDTOinGivenConfiguration(long id) {
+        Configuration conf = this.configurationRepository.findById(id).orElse(null);
+        if (conf == null) {
+            logger.info("Configuration not fount. Returning empty set of mibs");
+            return new ArrayList<>();
+        }
+        return this.mibService.convert(conf.getMib());
+
+    }
+
 
 }

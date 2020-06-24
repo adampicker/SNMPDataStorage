@@ -23,6 +23,7 @@ public class ClientConverter implements GenericConverter<Client, ClientDTO> {
         dto.setPort(entity.getPort());
         dto.setPid(entity.getPid());
         dto.setUserName(entity.getUserName());
+        dto.setConfiguration(entity.getConfiguration().getId());
         return dto;
     }
 

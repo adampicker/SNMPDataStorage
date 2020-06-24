@@ -44,6 +44,10 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.findById(id).orElse(null);
     }
 
+    public ClientDTO getByIdDTO(Long id) {
+        return this.convert(clientRepository.findById(id).orElse(null));
+    }
+
     @Override
     public Client saveOrUpdate(Client client) {
         clientRepository.save(client);
@@ -70,6 +74,10 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDTO convert(Client client) {
+        if (client == null) {
+            System.out.println("Client to convert is null");
+            return null;
+        }
         ClientDTO dto = new ClientDTO();
         return this.clientConverter.createFromEntity(client);
     }
@@ -81,5 +89,5 @@ public class ClientServiceImpl implements ClientService {
         }
         this.clientRepository.saveAll(clientToSetUpdateStatus);
     }
-    
+
 }

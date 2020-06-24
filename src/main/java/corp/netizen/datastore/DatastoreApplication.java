@@ -30,51 +30,50 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class DatastoreApplication {
 
-	public static Logger logger  = LoggerFactory.getLogger(DatastoreApplication.class);
+    public static Logger logger = LoggerFactory.getLogger(DatastoreApplication.class);
 
-	public static String QUEUE_NAME = "msg_gueue";	
-	
-	@Bean
-	Queue queue() {
-		return new Queue(QUEUE_NAME, false);
-	}
-        
-        @Bean
-	TopicExchange exchange() {
-		return new TopicExchange("spring-boot-exchange");
-	}
-	
-	@Bean
-	Binding binding(Queue queue, TopicExchange exchange) {
-		return BindingBuilder.bind(queue).to(exchange).with(QUEUE_NAME);
-	}
-	
-	@Bean
-	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
-	MessageListenerAdapter listenerAdapter) {
-		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-		container.setConnectionFactory(connectionFactory);
-		container.setQueueNames(QUEUE_NAME);
-		container.setMessageListener(listenerAdapter);
-		return container;
-	}
+    public static String QUEUE_NAME = "msg_gueue";
 
-	@Bean
-	MessageListenerAdapter listenerAdapter(StatusMessageListener receiver) {
-		return new MessageListenerAdapter(receiver, "receiveMessage");
-	}
+    @Bean
+    Queue queue() {
+        return new Queue(QUEUE_NAME, false);
+    }
 
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    TopicExchange exchange() {
+        return new TopicExchange("spring-boot-exchange");
+    }
 
-        
-        public static void main(String[] args) {
-		logger.info("Application starting with params: " + args);
-		SpringApplication.run(DatastoreApplication.class, args);
-	}
+    @Bean
+    Binding binding(Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(QUEUE_NAME);
+    }
 
-	
+    @Bean
+    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
+                                             MessageListenerAdapter listenerAdapter) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(QUEUE_NAME);
+        container.setMessageListener(listenerAdapter);
+        return container;
+    }
+
+    @Bean
+    MessageListenerAdapter listenerAdapter(StatusMessageListener receiver) {
+        return new MessageListenerAdapter(receiver, "receiveMessage");
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
+    public static void main(String[] args) {
+        logger.info("Application starting with params: " + args);
+        SpringApplication.run(DatastoreApplication.class, args);
+    }
+
 
 }

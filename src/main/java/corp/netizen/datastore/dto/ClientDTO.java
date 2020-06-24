@@ -15,6 +15,7 @@ public class ClientDTO {
     String port;
     int pid;
     String userName;
+    Long configuration;
 
 
 }

@@ -1,13 +1,17 @@
 package corp.netizen.datastore.controller;
 
+import corp.netizen.datastore.DatastoreApplication;
 import corp.netizen.datastore.dto.ConfigurationDTO;
 import corp.netizen.datastore.dto.ConfigurationSaveDto;
+import corp.netizen.datastore.dto.MibDTO;
 import corp.netizen.datastore.model.Configuration;
 import corp.netizen.datastore.service.ClientService;
 import corp.netizen.datastore.service.ClientServiceImpl;
 import corp.netizen.datastore.service.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +28,13 @@ public class MonitorConfigurationController {
     ConfigurationService configurationService;
     @Autowired
     ClientServiceImpl clientService;
+
+    public RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    public MonitorConfigurationController(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
     @RequestMapping(path = "/add-configuration", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity addConfiguration(@RequestBody ConfigurationSaveDto configuration) {
@@ -55,6 +66,12 @@ public class MonitorConfigurationController {
         logger.info("Got configuration DELETE request for: " + id);
         this.configurationService.delete(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @RequestMapping(path = "/get-mibs-in-configuration/{id}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<List<MibDTO>> getMibInConfiguration(@PathVariable("id") long id) {
+        logger.info("Got configuration GET request for mibs in configuration: " + id);
+        return new ResponseEntity<>(this.configurationService.listAllMibDTOinGivenConfiguration(id), HttpStatus.OK);
     }
 
 

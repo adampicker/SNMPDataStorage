@@ -33,85 +33,85 @@ import java.util.Arrays;
 public class SpringSecurityConfig {
 
 
-	@Bean
-	static CorsFilter corsFilter() {
-		CorsFilter filter = new CorsFilter();
-		return filter;
-	}
-	@EnableWebSecurity
-	@Configuration
-	@Order(1)
-	public static class ClientSecurityConfig extends WebSecurityConfigurerAdapter{
+    @Bean
+    static CorsFilter corsFilter() {
+        CorsFilter filter = new CorsFilter();
+        return filter;
+    }
 
-		@Autowired
-		private AuthenticationEntryPoint authEntryPoint;
+    @EnableWebSecurity
+    @Configuration
+    @Order(1)
+    public static class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
 
-		@Autowired
-		private ApplicationUserService applicationUserService;
-		@Autowired
-		BCryptPasswordEncoder bCryptPasswordEncoder;
+        @Autowired
+        private AuthenticationEntryPoint authEntryPoint;
 
-
-
-		@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			http
-					//.cors().and()
-					.addFilterBefore(corsFilter(), SessionManagementFilter.class)
-					.antMatcher("/clients/**") // Add this
-					.httpBasic().and()
-					.exceptionHandling()
-					.authenticationEntryPoint(authEntryPoint).and().authorizeRequests()
-					.antMatchers("/clients/**").authenticated()
-				.and().csrf().disable();
-		}
-
-		@Autowired
-		public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-			auth.inMemoryAuthentication().withUser("snmp")
-					.password(bCryptPasswordEncoder
-							.encode("snmp"))
-					.roles("CLIENT");
-		}
+        @Autowired
+        private ApplicationUserService applicationUserService;
+        @Autowired
+        BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
-	}
-	@Configuration
-	@EnableWebSecurity
-	public static class UserSecurityConfig extends WebSecurityConfigurerAdapter{
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    //.cors().and()
+                    .addFilterBefore(corsFilter(), SessionManagementFilter.class)
+                    .antMatcher("/clients/**") // Add this
+                    .httpBasic().and()
+                    .exceptionHandling()
+                    .authenticationEntryPoint(authEntryPoint).and().authorizeRequests()
+                    .antMatchers("/clients/**").authenticated()
+                    .and().csrf().disable();
+        }
+
+        @Autowired
+        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+            auth.inMemoryAuthentication().withUser("snmp")
+                    .password(bCryptPasswordEncoder
+                            .encode("snmp"))
+                    .roles("CLIENT");
+        }
 
 
-		@Autowired
-		private UserDetailsService userDetailsService;
-		@Autowired
-		private BCryptPasswordEncoder bCryptPasswordEncoder;
+    }
 
-		@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			System.out.println("here");
-			http
-					//.cors().and()
-					.addFilterBefore(corsFilter(), SessionManagementFilter.class)
-					.csrf().disable()
-					.authorizeRequests()
-					.antMatchers("/users/sign-up").permitAll()
-					.anyRequest().authenticated()
-					.and()
-					.addFilter(new JWTAuthenticationFilter(authenticationManager()))
-					.addFilter(new JWTAuthorizationFilter(authenticationManager()))
-					.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		}
+    @Configuration
+    @EnableWebSecurity
+    public static class UserSecurityConfig extends WebSecurityConfigurerAdapter {
 
-		@Override
-		public void configure(AuthenticationManagerBuilder auth) throws Exception {
-			auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-		}
 
-	}
+        @Autowired
+        private UserDetailsService userDetailsService;
+        @Autowired
+        private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            System.out.println("here");
+            http
+                    //.cors().and()
+                    .addFilterBefore(corsFilter(), SessionManagementFilter.class)
+                    .csrf().disable()
+                    .authorizeRequests()
+                    .antMatchers("/users/sign-up").permitAll()
+                    .antMatchers("/users/data-stream").permitAll()
+                    .anyRequest().authenticated()
+                    .and()
+                    .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                    .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        }
+
+        @Override
+        public void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+        }
+
+    }
 
 //					.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll().and()
-
-
 
 
 }
