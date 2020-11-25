@@ -1,8 +1,6 @@
 package corp.netizen.datastore;
 
 
-import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
-import com.ulisesbocchio.jasyptspringboot.annotation.EncryptablePropertySource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Binding;
@@ -26,7 +24,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @ComponentScan("corp.netizen.datastore")
 @SpringBootApplication
-@EncryptablePropertySource("application.properties")
+//@EncryptablePropertySource("application.properties")
 @Configuration
 public class DatastoreApplication {
 

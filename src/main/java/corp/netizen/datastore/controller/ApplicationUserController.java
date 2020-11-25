@@ -5,10 +5,11 @@ import corp.netizen.datastore.service.ApplicationUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-//@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/users")
 public class ApplicationUserController {
@@ -20,19 +21,24 @@ public class ApplicationUserController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+
+    /*@Autowired
+    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder){
+        this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }*/
+
     @PostMapping("/sign-up")
-        public String signUp(@RequestBody ApplicationUser applicationUser){
+        public ResponseEntity signUp(@RequestBody ApplicationUser applicationUser){
             logger.info("Got sign up request from: " + applicationUser.getUsername());
-            ApplicationUser appUsr = this.applicationUserService.findByName(applicationUser.getUsername());
-            if (appUsr != null) return "ELO idz stont";
+            //applicationUser.setId(0);
             applicationUser.setPassword(bCryptPasswordEncoder.encode(applicationUser.getPassword()));
             this.applicationUserService.saveOrUpdate(applicationUser);
-            return "siemanko witam w mojej kuchni";
+            return new ResponseEntity(HttpStatus.CREATED);
         }
 
     @GetMapping("/test")
     public String test(){
-        System.out.println("Jakim prawem");
         return "test";
     }
 

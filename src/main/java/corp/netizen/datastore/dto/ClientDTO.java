@@ -17,5 +17,5 @@ public class ClientDTO {
     String userName;
     Long configuration;
 
-
 }
+

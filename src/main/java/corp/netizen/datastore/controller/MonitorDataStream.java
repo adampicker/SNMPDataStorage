@@ -54,8 +54,10 @@ public class MonitorDataStream {
     @GetMapping(path = "/data-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<MibValuesDTO> streamFlux() {
         logger.info("Data stream opened");
+        Flux<MibValuesDTO> ping = Flux.interval(Duration.ofMillis(2000))
+                .map(l -> new MibValuesDTO());
         this.mibValuesService.getLastDayDataOnQueue();
-        return f;
+        return f.mergeWith(ping);
     }
 
     @GetMapping(value = "/second-data-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)

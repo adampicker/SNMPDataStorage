@@ -3,7 +3,6 @@ package corp.netizen.datastore.auth;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import corp.netizen.datastore.controller.StatusController;
 import corp.netizen.datastore.model.ApplicationUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -63,11 +61,15 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         logger.debug("Authentication successful");
         //final String TOKEN_PREFIX = "PREFIX";
         logger.info(((User)authResult.getPrincipal()).getUsername());
+        logger.info("sucessful auth");
+        final String TOKEN_PREFIX = "PREFIX";
         String token = JWT.create()
                 .withSubject(((User) authResult.getPrincipal()).getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
         response.addHeader(SecurityConstants.HEADER_STRING, token);
+        logger.info("added header : " + token);
+        response.addHeader("Access-Control-Expose-Headers", SecurityConstants.HEADER_STRING);
 
     }
 }
