@@ -40,7 +40,7 @@ public class DataController {
         if (client == null) {
             logger.error("Data from unrecognized client, id: " + id);
             logger.error("Refuse to save data. Sending response HttpStatus.NOT_MODIFIED(" + HttpStatus.NOT_MODIFIED.value() + ")");
-            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+                return new ResponseEntity<>(HttpStatus.NOT_MODIFIED); //304
         } else {
             logger.debug("Extracting and saving data from: " + id);
             mibValuesService.saveData(data);
@@ -48,8 +48,8 @@ public class DataController {
         if (client.getStatus().toString() == Client.Status.UPDATED.toString()) {
             client.setStatus(Client.Status.ACTIVE);
             this.clientService.saveOrUpdate(client);
-            logger.info("Clients configuration changed. Sending 202 status to trigger configuration update on client");
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            logger.info("Clients configuration changed. Sending 205 status to trigger configuration update on client");
+            return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.OK);
 

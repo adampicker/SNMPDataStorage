@@ -35,7 +35,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        response = CorsFilter.applyCorsHeaders(request,response);
+        //response = CorsFilter.applyCorsHeaders(request,response);
         response.setStatus(HttpServletResponse.SC_OK);
         try{
             ApplicationUser creds = new ObjectMapper()

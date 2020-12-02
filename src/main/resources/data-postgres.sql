@@ -1,14 +1,14 @@
 INSERT INTO public.mib(
 id, description, oid, telnet_shortcut, unit)
-VALUES (0, 'average system load', '.1.3.6.1.4.1.2021.10.1.3.1', '1 min load', '1minload');
+VALUES (0, 'average system 1 min load', '.1.3.6.1.4.1.2021.10.1.3.1', '1 min load', '1minload');
 
 INSERT INTO public.mib(
 id, description, oid, telnet_shortcut, unit)
-VALUES (1, 'average system load', '.1.3.6.1.4.1.2021.10.1.3.2', '5 min load', '5minload');
+VALUES (1, 'average system 5 min load', '.1.3.6.1.4.1.2021.10.1.3.2', '5 min load', '5minload');
 
 INSERT INTO public.mib(
 id, description, oid, telnet_shortcut, unit)
-VALUES (2, 'average system load', '.1.3.6.1.4.1.2021.10.1.3.3', '15 min load', '15minload');
+VALUES (2, 'average system 15 min load', '.1.3.6.1.4.1.2021.10.1.3.3', '15 min load', '15minload');
 
 INSERT INTO public.mib(
 id, description, oid, telnet_shortcut, unit)

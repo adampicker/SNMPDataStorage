@@ -1,10 +1,16 @@
 package corp.netizen.datastore.auth;
 
+import lombok.NoArgsConstructor;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/*
 public class CorsFilter implements javax.servlet.Filter {
 
 
@@ -15,6 +21,7 @@ public class CorsFilter implements javax.servlet.Filter {
 
         response = CorsFilter.applyCorsHeaders(request, response);
         if (request.getMethod().equals("OPTIONS")) {
+            System.out.println("XD");
             response.setStatus(HttpServletResponse.SC_OK);
             return;
         }
@@ -22,6 +29,9 @@ public class CorsFilter implements javax.servlet.Filter {
     }
 
     public static HttpServletResponse applyCorsHeaders(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println(request.getHeader("Referer"));
+        System.out.println(request.getHeader("Origin"));
+        System.out.println(request.getMethod());
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "*");
@@ -44,3 +54,4 @@ public class CorsFilter implements javax.servlet.Filter {
 
 
 }
+*/

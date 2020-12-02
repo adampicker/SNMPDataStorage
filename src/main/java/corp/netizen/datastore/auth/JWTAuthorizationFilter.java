@@ -27,8 +27,9 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        response = CorsFilter.applyCorsHeaders(request,response);
+       // response = CorsFilter.applyCorsHeaders(request,response);
         if ( request.getMethod().equals("OPTIONS") ) {
+            logger.info("DID");
             response.setStatus(HttpServletResponse.SC_OK);
             return;
         }

@@ -85,7 +85,7 @@ public class ClientServiceImpl implements ClientService {
     public void configurationUpdated(Long configurationId) {
         List<Client> clientToSetUpdateStatus = this.clientRepository.findAll();
         for (Client client : clientToSetUpdateStatus) {
-            client.setStatus(Client.Status.UPDATED);
+            if (client.getConfiguration().getId() == configurationId )client.setStatus(Client.Status.UPDATED);
         }
         this.clientRepository.saveAll(clientToSetUpdateStatus);
     }
