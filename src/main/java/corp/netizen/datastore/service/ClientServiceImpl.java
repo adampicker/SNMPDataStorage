@@ -90,4 +90,12 @@ public class ClientServiceImpl implements ClientService {
         this.clientRepository.saveAll(clientToSetUpdateStatus);
     }
 
+    public int getAmountOfActiveClients() {
+        return clientRepository.getAmountOfClientsWithStatus(Client.Status.ACTIVE);
+    }
+
+    public int getAmountOfInactiveClients() {
+        return clientRepository.getAmountOfClientsWithStatus(Client.Status.INACTIVE);
+    }
+
 }

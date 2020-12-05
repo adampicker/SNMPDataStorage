@@ -13,4 +13,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 	@Query("SELECT c FROM Client c WHERE LOWER(c.macAddress) = LOWER(:macAddress)")
     public Optional<Client> findByMac(@Param("macAddress") String macAddress);
 
+    @Query("SELECT COUNT(c) FROM Client c WHERE c.status = :status")
+    public Integer getAmountOfClientsWithStatus(@Param("status") Client.Status status);
+
 }
