@@ -72,7 +72,7 @@ public class DashboardController {
         confs.forEach(conf ->{
             Optional<Client> c = allClients.stream()
                     .filter(client -> client.getConfiguration().getId() == conf.getId()).findAny();
-            if (c.) configurationsNotAssigned.incrementAndGet();
+            if (c.isEmpty()) configurationsNotAssigned.incrementAndGet();
         });
         dashboardData.setConfigurationsNotAssigned(configurationsNotAssigned.get());
         return new ResponseEntity<>(dashboardData, HttpStatus.OK);
