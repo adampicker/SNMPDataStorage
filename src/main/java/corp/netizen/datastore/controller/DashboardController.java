@@ -71,14 +71,8 @@ public class DashboardController {
         List<Client> allClients = this.clientService.listAll();
         confs.forEach(conf ->{
             Optional<Client> c = allClients.stream()
-                    .peek(client -> {
-                        System.out.println(client.getConfiguration().getId() );
-                        System.out.println(conf.getId());
-                        System.out.println(client.getConfiguration().getId() == conf.getId());
-                        //return client;
-                    })
                     .filter(client -> client.getConfiguration().getId() == conf.getId()).findAny();
-            if (c.isEmpty()) configurationsNotAssigned.incrementAndGet();
+            if (c.) configurationsNotAssigned.incrementAndGet();
         });
         dashboardData.setConfigurationsNotAssigned(configurationsNotAssigned.get());
         return new ResponseEntity<>(dashboardData, HttpStatus.OK);
