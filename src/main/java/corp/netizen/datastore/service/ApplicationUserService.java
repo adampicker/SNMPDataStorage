@@ -8,9 +8,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ApplicationUserService {
 
-    @Autowired
     ApplicationUserRepository applicationUserRepository;
 
+    @Autowired
+    public ApplicationUserService(ApplicationUserRepository applicationUserRepository){
+        this.applicationUserRepository = applicationUserRepository;
+    }
 
     public ApplicationUser getById(Long id){
         return this.applicationUserRepository.findById(id).orElse(null);

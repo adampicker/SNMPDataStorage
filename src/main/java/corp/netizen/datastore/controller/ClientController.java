@@ -29,7 +29,7 @@ public class ClientController {
 
     @RequestMapping(path = "/get-clients", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<ClientDTO>> getAllClients() {
-        return new ResponseEntity<List<ClientDTO>>(this.clientService.listAll(), HttpStatus.OK);
+        return new ResponseEntity<List<ClientDTO>>(this.clientService.listAllDto(), HttpStatus.OK);
     }
 
     @RequestMapping(path = "/get-client/{id}", method = RequestMethod.GET, produces = "application/json")

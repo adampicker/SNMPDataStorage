@@ -14,8 +14,10 @@ import corp.netizen.datastore.model.MibValue;
 import corp.netizen.datastore.repository.MibValuesRepository;
 
 import javax.xml.crypto.Data;
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MibValuesService {
@@ -80,14 +82,27 @@ public class MibValuesService {
     public MibValuesDTO listAllDto() {
         MibValuesDTO dtoToSend = new MibValuesDTO();
         List<MibValue> allValues = this.mibValuesRepository.findAll();
-        for (int i = 0; i < allValues.size(); i++) {
-            dtoToSend.getValues().add(this.convert(allValues.get(i)));
+        for (MibValue val : allValues) {
+            dtoToSend.getValues().add(this.convert(val));
         }
         return dtoToSend;
     }
 
     public void getLastDayDataOnQueue() {
         this.rabbitTemplate.convertAndSend(DatastoreApplication.QUEUE_NAME, this.listAllDto());
+    }
+
+    public MibValuesDTO getLastDayDataDto(long clientId) {
+        Instant date = Instant.now().minusSeconds(24 * 60 * 60 * 60); //day
+        Optional<List<MibValue>> values = this.mibValuesRepository.getLastDayClientsDataNotOlderThanGivenDate(clientId, date);
+        List<MibValue> unPackedValues = values.isPresent() ? values.get() : new LinkedList<>();
+
+        MibValuesDTO dtoToSend = new MibValuesDTO();
+        for (MibValue val : unPackedValues) {
+            dtoToSend.getValues().add(this.convert(val));
+        }
+        return dtoToSend;
+
     }
 
 }

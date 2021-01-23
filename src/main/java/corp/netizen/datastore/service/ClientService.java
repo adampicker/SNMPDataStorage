@@ -7,7 +7,9 @@ import corp.netizen.datastore.model.Client;
 
 public interface ClientService {
 	
-	List<ClientDTO> listAll();
+	List<ClientDTO> listAllDto();
+
+    List<Client> listAll();
 
     Client getById(Long id);
 

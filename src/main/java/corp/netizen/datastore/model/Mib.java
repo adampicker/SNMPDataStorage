@@ -1,6 +1,7 @@
 package corp.netizen.datastore.model;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -74,4 +75,18 @@ public class Mib {
                 ", configuration=" + configuration +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Mib mib = (Mib) o;
+        return id.equals(mib.id) && Objects.equals(oid, mib.oid) && Objects.equals(unit, mib.unit) && Objects.equals(description, mib.description) && Objects.equals(telnetShortcut, mib.telnetShortcut) && Objects.equals(mibValue, mib.mibValue) && Objects.equals(configuration, mib.configuration);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, oid, unit, description, telnetShortcut, mibValue, configuration);
+    }
+
 }

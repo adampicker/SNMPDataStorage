@@ -34,16 +34,23 @@ public class ConfigurationController {
         this.configurationService = configurationService;
     }
 	
-	@RequestMapping(path="/access/{mac}", method = RequestMethod.PATCH, produces = "application/json")
-	public ResponseEntity<ClientDTO> getAccess(@PathVariable("mac") String macAddress) {
+	@RequestMapping(path="/access/{mac}/{pid}/{telnetPort}", method = RequestMethod.PATCH, produces = "application/json")
+	public ResponseEntity<ClientDTO> getAccess(@PathVariable("mac") String macAddress,
+											   @PathVariable("pid") String pid,
+											   @PathVariable("telnetPort") String telnetPort) {
 		boolean accountCreated = false;
 		Client client = clientService.getByMac(macAddress); // creates new client if one with given mac not exists
 		if (client == null) {
 			logger.info("New client with mac: " + macAddress);
 			accountCreated = true;
-			client = clientService.saveOrUpdate(new Client(macAddress, this.configurationService.getDefaultConfiguration()));
+			client = clientService.saveOrUpdate(new Client(macAddress, pid, telnetPort, this.configurationService.getDefaultConfiguration(), "WORKSTATION"));
 		}
-		logger.info("Returning client with params:  id:" + client.getId() + " mac: " + client.getMacAddress() + " configurationId: " + client.getConfiguration().getId() );
+		logger.info("Returning client with params:  id:" + client.getId() +
+				" mac: " + client.getMacAddress() +
+				" configurationId: " + client.getConfiguration().getId() +
+				" pid: " + client.getPid() +
+				" telnet on port: " + client.getTelnetPort() +
+				" type: " + client.getType());
 
 		return new ResponseEntity<ClientDTO>(this.clientService.convert(client), accountCreated ? HttpStatus.CREATED : HttpStatus.OK);
 	}
@@ -63,8 +70,6 @@ public class ConfigurationController {
 			this.clientService.saveOrUpdate(client);
 		}
 
-/*		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.set("MyResponseHeader", "SIEMANKO");*/
 		return new ResponseEntity<>(this.configurationService.getConfiguration(client.getConfiguration().getId()), null, HttpStatus.OK);
 	}
 

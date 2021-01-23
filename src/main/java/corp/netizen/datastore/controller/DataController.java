@@ -24,8 +24,6 @@ public class DataController {
 
     public static Logger logger = LoggerFactory.getLogger(DataController.class);
 
-    final static int CLIENT_UPDATED_STATUS_CODE = 240;
-
     @Autowired
     MibValuesService mibValuesService;
     @Autowired

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MibRepository extends JpaRepository<Mib, Long> {
 	
-	//@Query("SELECT m FROM Mib m WHERE m.oid LIKE CONCAT('.', :oid)")
 	@Query("SELECT m FROM Mib m WHERE m.oid LIKE :oid")
 	public Optional<Mib> findByOid(@Param("oid") String oid);
 

@@ -142,5 +142,10 @@ public class ConfigurationService {
 
     }
 
+    public List<Configuration> listAll() {
+        List<Configuration> confs = this.configurationRepository.findAll();
+        return confs;
+    }
+
 
 }

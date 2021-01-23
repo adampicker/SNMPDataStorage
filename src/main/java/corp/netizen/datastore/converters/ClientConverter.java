@@ -20,7 +20,7 @@ public class ClientConverter implements GenericConverter<Client, ClientDTO> {
         dto.setMacAddress(entity.getMacAddress());
         dto.setStatus(entity.getStatus().toString());
         dto.setType(entity.getType());
-        dto.setPort(entity.getPort());
+        dto.setTelnetPort(entity.getTelnetPort());
         dto.setPid(entity.getPid());
         dto.setUserName(entity.getUserName());
         dto.setConfiguration(entity.getConfiguration().getId());

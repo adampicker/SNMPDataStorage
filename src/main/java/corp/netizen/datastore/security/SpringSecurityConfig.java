@@ -38,21 +38,12 @@ public class 	SpringSecurityConfig {
 		@Autowired
 		BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	/*@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests()
-				.anyRequest().authenticated()
-				.and().httpBasic()
-				.authenticationEntryPoint(authEntryPoint);
-	}*/
-
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http.antMatcher("/clients/**") // Add this
 					.httpBasic().and()
 					.exceptionHandling().authenticationEntryPoint(authEntryPoint).and().authorizeRequests()
 					.antMatchers("/clients/**").authenticated()
-					/*.antMatchers("/users/**").permitAll().anyRequest().authenticated()*/
 				.and().csrf().disable();
 		}
 
@@ -75,9 +66,8 @@ public class 	SpringSecurityConfig {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			System.out.println("here");
 			http.cors().and().csrf().disable().authorizeRequests()
-					.antMatchers("/users/sign-up")
+					.antMatchers("/users/sign-up", "/users/test")
 					//.permitAll().antMatchers(HttpMethod.OPTIONS, "/**")
 					.permitAll() // .antMatchers("/users/sign-up").permitAll()
 					.anyRequest().authenticated()

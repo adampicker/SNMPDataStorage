@@ -31,12 +31,17 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public List<ClientDTO> listAll() {
+    public List<ClientDTO> listAllDto() {
         List<ClientDTO> clients = new ArrayList<>();
         clientRepository.findAll().forEach(client -> {
             clients.add(this.convert(client));
         });
         return clients;
+    }
+
+    @Override
+    public List<Client> listAll(){
+        return this.clientRepository.findAll();
     }
 
     @Override

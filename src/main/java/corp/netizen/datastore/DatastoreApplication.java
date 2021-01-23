@@ -39,7 +39,7 @@ public class DatastoreApplication {
 
     @Bean
     TopicExchange exchange() {
-        return new TopicExchange("spring-boot-exchange");
+        return new TopicExchange("mib-values-queue");
     }
 
     @Bean

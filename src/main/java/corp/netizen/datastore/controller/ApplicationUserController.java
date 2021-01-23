@@ -21,17 +21,9 @@ public class ApplicationUserController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
-    /*@Autowired
-    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder){
-        this.userService = userService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }*/
-
     @PostMapping("/sign-up")
         public ResponseEntity signUp(@RequestBody ApplicationUser applicationUser){
             logger.info("Got sign up request from: " + applicationUser.getUsername());
-            //applicationUser.setId(0);
             applicationUser.setPassword(bCryptPasswordEncoder.encode(applicationUser.getPassword()));
             this.applicationUserService.saveOrUpdate(applicationUser);
             return new ResponseEntity(HttpStatus.CREATED);

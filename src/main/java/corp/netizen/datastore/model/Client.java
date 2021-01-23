@@ -19,8 +19,8 @@ public class Client {
     private Status status;
     private String macAddress;
     private String type;
-    private String port;
-    private int pid;
+    private String telnetPort;
+    private String pid;
     private String userName;
 
 
@@ -35,10 +35,13 @@ public class Client {
     public Client() {
     }
 
-    public Client(String macAddress, Configuration defaultConfiguration) {
+    public Client(String macAddress, String pid, String telnetPort, Configuration defaultConfiguration, String type) {
         this.macAddress = macAddress;
+        this.pid = pid;
+        this.telnetPort = telnetPort;
         this.configuration = defaultConfiguration;
         this.status = Status.INACTIVE;
+        this.type = type;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class Client {
                 status == client.status &&
                 Objects.equals(macAddress, client.macAddress) &&
                 Objects.equals(type, client.type) &&
-                Objects.equals(port, client.port) &&
+                Objects.equals(telnetPort, client.telnetPort) &&
                 Objects.equals(userName, client.userName) &&
                 Objects.equals(configuration, client.configuration) &&
                 Objects.equals(mibValue, client.mibValue);
@@ -59,7 +62,7 @@ public class Client {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, status, macAddress, type, port, pid, userName, configuration, mibValue);
+        return Objects.hash(id, status, macAddress, type, telnetPort, pid, userName, configuration, mibValue);
     }
 
     public enum Status {

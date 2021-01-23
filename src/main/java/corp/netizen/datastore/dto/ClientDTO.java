@@ -12,8 +12,8 @@ public class ClientDTO {
     String macAddress;
     String status;
     String type;
-    String port;
-    int pid;
+    String telnetPort;
+    String pid;
     String userName;
     Long configuration;
 
