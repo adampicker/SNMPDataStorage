@@ -85,44 +85,10 @@ INSERT INTO public.configuration(
 id, configuration_name, default_configuration)
 VALUES (100, 'CONFIGURATION#123', TRUE);
 
-/*INSERT INTO public.configuration(
-id, configuration_name, default_configuration)
-VALUES (101, 'konfiguracja2', FALSE);*/
-
-/*INSERT INTO public.clients(
-id, mac_address, status, configuration, type, telnet_port, pid, user_name)
-VALUES (100, 'samplemac', 0, 100, 'desktop', '1601', 323, 'snmp');
-
-INSERT INTO public.clients(
-id, mac_address, status, configuration, type, telnet_port, pid, user_name)
-VALUES (101, 'samplemac2', 1, 101, 'desktop', '1601', 323, 'snmp');
-
-INSERT INTO public.clients(
-id, mac_address, status, configuration, type, telnet_port, pid, user_name)
-VALUES (102, 'samplemac3', 2, 100, 'desktop', '1621', 323, 'snmp4');
-
-INSERT INTO public.clients(
-id, mac_address, status, configuration, type, telnet_port, pid, user_name)
-VALUES (103, 'samplemac4', 3, 101, 'desktop', '1621', 323, 'snmp5');*/
-
 INSERT INTO public.configuration_mib(
 configuration_id, mib_id)
 VALUES (100, 0);
 
-INSERT INTO public.configuration_mib(
-configuration_id, mib_id)
-VALUES (100, 1);
-INSERT INTO public.configuration_mib(
-configuration_id, mib_id)
-VALUES (100, 2);
-
-INSERT INTO public.configuration_mib(
-configuration_id, mib_id)
-VALUES (100, 3);
-
-INSERT INTO public.configuration_mib(
-configuration_id, mib_id)
-VALUES (101, 3);
 
 SELECT *
 FROM public.mib_value m;
