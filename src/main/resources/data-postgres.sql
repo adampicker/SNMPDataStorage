@@ -2,15 +2,15 @@
 
 INSERT INTO public.mib(
 id, description, oid, telnet_shortcut, unit)
-VALUES (0, 'average system 1 min load', '.1.3.6.1.4.1.2021.10.1.3.1', '1 min load', '1minload');
+VALUES (0, 'average system 1 min load', '.1.3.6.1.4.1.2021.10.1.3.1', '1minload', '1minload');
 
 INSERT INTO public.mib(
 id, description, oid, telnet_shortcut, unit)
-VALUES (1, 'average system 5 min load', '.1.3.6.1.4.1.2021.10.1.3.2', '5 min load', '5minload');
+VALUES (1, 'average system 5 min load', '.1.3.6.1.4.1.2021.10.1.3.2', '5minload', '5minload');
 
 INSERT INTO public.mib(
 id, description, oid, telnet_shortcut, unit)
-VALUES (2, 'average system 15 min load', '.1.3.6.1.4.1.2021.10.1.3.3', '15 min load', '15minload');
+VALUES (2, 'average system 15 min load', '.1.3.6.1.4.1.2021.10.1.3.3', '15minload', '15minload');
 
 INSERT INTO public.mib(
 id, description, oid, telnet_shortcut, unit)
@@ -83,13 +83,13 @@ VALUES (25, 'nice CPU time', '.1.3.6.1.4.1.2021.11.51.0', 'nicecpu', 'seconds');
 
 INSERT INTO public.configuration(
 id, configuration_name, default_configuration)
-VALUES (100, 'konfiguracja1', TRUE);
+VALUES (100, 'CONFIGURATION#123', TRUE);
 
-INSERT INTO public.configuration(
+/*INSERT INTO public.configuration(
 id, configuration_name, default_configuration)
-VALUES (101, 'konfiguracja2', FALSE);
+VALUES (101, 'konfiguracja2', FALSE);*/
 
-INSERT INTO public.clients(
+/*INSERT INTO public.clients(
 id, mac_address, status, configuration, type, telnet_port, pid, user_name)
 VALUES (100, 'samplemac', 0, 100, 'desktop', '1601', 323, 'snmp');
 
@@ -103,7 +103,7 @@ VALUES (102, 'samplemac3', 2, 100, 'desktop', '1621', 323, 'snmp4');
 
 INSERT INTO public.clients(
 id, mac_address, status, configuration, type, telnet_port, pid, user_name)
-VALUES (103, 'samplemac4', 3, 101, 'desktop', '1621', 323, 'snmp5');
+VALUES (103, 'samplemac4', 3, 101, 'desktop', '1621', 323, 'snmp5');*/
 
 INSERT INTO public.configuration_mib(
 configuration_id, mib_id)
